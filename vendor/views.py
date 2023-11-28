@@ -6,7 +6,7 @@ from .models import *
 from .serializers import *
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, authentication_classes, permission_classes
 from django.shortcuts import get_object_or_404
 
 
@@ -123,6 +123,8 @@ class PurchaseOrderRetrieveUpdateDeleteAPIView(APIView):
     
     
 @api_view(['PATCH'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
 def mark_order_as_completed(request, po_id):
     try:
         order = PurchaseOrder.objects.get(pk=po_id)
@@ -144,6 +146,8 @@ def mark_order_as_completed(request, po_id):
     
     
 @api_view(['GET'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
 def vendor_performance(request, vendor_id):
     print("vendor performance")
     # Retrieve the vendor instance
@@ -163,6 +167,8 @@ def vendor_performance(request, vendor_id):
 
 
 @api_view(['POST'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
 def acknowledge_purchase_order(request, po_id):
     # Retrieve the purchase order instance
     purchase_order = get_object_or_404(PurchaseOrder, pk=po_id)
